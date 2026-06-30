@@ -1,6 +1,4 @@
-// ============================================
-// MAPEAMENTO DE BANDEIRAS POR NOME E SIGLA
-// ============================================
+
 const FLAGS = {
   BRA: '🇧🇷', ARG: '🇦🇷', URU: '🇺🇾', COL: '🇨🇴',
   ECU: '🇪🇨', VEN: '🇻🇪', CHI: '🇨🇱', PAR: '🇵🇾',
@@ -10,19 +8,14 @@ const FLAGS = {
   Chile: '🇨🇱', Paraguay: '🇵🇾', Peru: '🇵🇪', Bolivia: '🇧🇴',
 };
 
-// ============================================
-// TRADUÇÃO DOS NOMES PARA PORTUGUÊS
-// ============================================
+
 const NAMES_PT = {
   Brazil: 'Brasil', Argentina: 'Argentina', Uruguay: 'Uruguai',
   Colombia: 'Colômbia', Ecuador: 'Equador', Venezuela: 'Venezuela',
   Chile: 'Chile', Paraguay: 'Paraguai', Peru: 'Peru', Bolivia: 'Bolívia',
 };
 
-// ============================================
-// DADOS FINAIS REAIS — ELIMINATÓRIAS CONMEBOL 2026
-// 18 rodadas encerradas (setembro/2025)
-// ============================================
+
 const DADOS_FINAIS = [
   { name: 'Argentina', abbr: 'ARG', wins: 11, draws: 4, losses: 3, points: 37, gf: 31, ga: 12, gd:  19 },
   { name: 'Ecuador',   abbr: 'ECU', wins:  8, draws: 3, losses: 7, points: 27, gf: 18, ga:  5, gd:  13 },
@@ -36,14 +29,10 @@ const DADOS_FINAIS = [
   { name: 'Chile',     abbr: 'CHI', wins:  3, draws: 2, losses:13, points: 11, gf: 16, ga: 31, gd: -15 },
 ];
 
-// ============================================
-// CONTROLE DO CONTADOR DE ATUALIZAÇÃO
-// ============================================
+
 let countdownInterval;
 
-// ============================================
-// FUNÇÕES AUXILIARES
-// ============================================
+
 function getFlag(name, abbr) {
   return FLAGS[name] || FLAGS[abbr] || '🏳️';
 }
@@ -66,9 +55,7 @@ function setStatus(type, text) {
   document.getElementById('status-text').textContent = text;
 }
 
-// ============================================
-// RENDERIZAÇÃO DA TABELA
-// ============================================
+
 function renderTable(standings, updatedAt) {
   const wrapper = document.getElementById('table-wrapper');
 
@@ -127,10 +114,7 @@ function renderTable(standings, updatedAt) {
     </table>`;
 }
 
-// ============================================
-// BUSCA DE DADOS EM TEMPO REAL (ESPN API)
-// Com timeout de 4s para não travar a página
-// ============================================
+
 async function fetchStandings() {
   setStatus('loading', 'Atualizando dados...');
   document.getElementById('countdown').textContent = '';
@@ -172,13 +156,11 @@ async function fetchStandings() {
     setStatus('live', 'Dados ao vivo — ESPN');
 
   } catch (err) {
-    // API bloqueada (CORS) ou timeout — usa dados reais finais
     const now = new Date().toLocaleString('pt-BR');
     renderTable(DADOS_FINAIS, now + ' — classificação final set/2025');
     setStatus('error', 'Classificação final — CONMEBOL 2026');
   }
 
-  // Agenda próxima tentativa em 5 min
   clearInterval(countdownInterval);
   let sec = 300;
   countdownInterval = setInterval(() => {
@@ -191,16 +173,13 @@ async function fetchStandings() {
   }, 1000);
 }
 
-// ============================================
-// INICIALIZAÇÃO — mostra dados imediatamente
-// enquanto tenta a API em paralelo
-// ============================================
+
 (function init() {
   // Exibe os dados reais de imediato (sem esperar API)
   const now = new Date().toLocaleString('pt-BR');
   renderTable(DADOS_FINAIS, now + ' — classificação final set/2025');
   setStatus('live', 'Classificação final — CONMEBOL 2026');
 
-  // Tenta atualizar via API em background
+
   fetchStandings();
 })();
