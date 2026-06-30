@@ -1,6 +1,12 @@
 
-window.alert('Bem-vindo(a) ao Portal da Seleção Brasileira! 🇧🇷⚽');
-const entrar = window.confirm('Você deseja entrar e saber mais sobre a Seleção Brasileira?');
+document.addEventListener('DOMContentLoaded', () => {
+  // Só exibe o alerta/confirm de boas-vindas na página da Seleção
+  // (identificada pela presença do elemento #titulo-selecao)
+  if (document.getElementById('titulo-selecao')) {
+    window.alert('Bem-vindo(a) ao Portal da Seleção Brasileira! 🇧🇷⚽');
+    window.confirm('Você deseja entrar e saber mais sobre a Seleção Brasileira?');
+  }
+});
 
 function alternarTema() {
   document.body.classList.toggle('dark');
